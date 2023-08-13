@@ -7,6 +7,7 @@ export const initialState = {
     rating: "",
     year: "",
   },
+  searchQuery: "",
 };
 
 export const actionTypes = {
@@ -15,6 +16,7 @@ export const actionTypes = {
   filterByRating: "FILTER_BY_RATING",
   toggleWatchlist: "TOGGLE_WATCHLIST",
   toggleStarred: "TOGGLE_STARRED",
+  searchMovies: "SEARCH_MOVIES",
 };
 export const moviesReducer = (state, action) => {
   switch (action.type) {
@@ -32,6 +34,8 @@ export const moviesReducer = (state, action) => {
       return { ...state, moviesList: action.payload };
     case actionTypes.toggleStarred:
       return { ...state, moviesList: action.payload };
+    case actionTypes.searchMovies:
+      return { ...state, searchQuery: action.payload };
     default:
       return { ...state };
   }

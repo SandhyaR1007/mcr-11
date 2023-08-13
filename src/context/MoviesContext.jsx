@@ -1,12 +1,14 @@
 import { createContext, useContext, useReducer } from "react";
 import { actionTypes, initialState, moviesReducer } from "./moviesReducer";
 import { useFilter } from "../utils/useFilter";
+import { useSearch } from "../utils/useSearch";
 
 const MoviesContext = createContext();
 
 export const MoviesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(moviesReducer, initialState);
   const { filterByGenre, filterByRating, filterByYear } = useFilter();
+  const { searchMovies } = useSearch();
 
   const updateGenre = (selectedGenre) => {
     dispatch({
@@ -26,7 +28,12 @@ export const MoviesProvider = ({ children }) => {
       payload: selectedRating,
     });
   };
-
+  const updateSearchQuery = (searchText) => {
+    dispatch({
+      type: actionTypes.searchMovies,
+      payload: searchText,
+    });
+  };
   const toggleWatchlist = (movieId) => {
     const updatedMovies = state.moviesList.map((data) =>
       data?.id === movieId
@@ -62,7 +69,8 @@ export const MoviesProvider = ({ children }) => {
   const getMovieDetailsById = (movieId) =>
     state.moviesList.find(({ id }) => Number(id) === Number(movieId));
 
-  let filteredMovies = filterByGenre(state.moviesList, state.filters.genre);
+  let filteredMovies = searchMovies(state.moviesList, state.searchQuery);
+  filteredMovies = filterByGenre(filteredMovies, state.filters.genre);
   filteredMovies = filterByYear(filteredMovies, state.filters.year);
   filteredMovies = filterByRating(filteredMovies, state.filters.rating);
 
@@ -76,6 +84,7 @@ export const MoviesProvider = ({ children }) => {
       value={{
         moviesList: state.moviesList,
         filters: state.filters,
+        searchQuery: state.searchQuery,
         genreData,
         filteredMovies,
         starredMoviesList,
@@ -83,6 +92,7 @@ export const MoviesProvider = ({ children }) => {
         updateGenre,
         updateRating,
         updateYear,
+        updateSearchQuery,
         toggleStarred,
         toggleWatchlist,
         getMovieDetailsById,
