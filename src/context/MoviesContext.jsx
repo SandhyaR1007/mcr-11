@@ -27,6 +27,38 @@ export const MoviesProvider = ({ children }) => {
     });
   };
 
+  const toggleWatchlist = (movieId) => {
+    const updatedMovies = state.moviesList.map((data) =>
+      data?.id === movieId
+        ? data?.inWatchlist
+          ? { ...data, inWatchlist: false }
+          : { ...data, inWatchlist: true }
+        : data
+    );
+    dispatch({
+      type: actionTypes.toggleWatchlist,
+      payload: updatedMovies,
+    });
+  };
+  const toggleStarred = (movieId) => {
+    const updatedMovies = state.moviesList.map((data) =>
+      data?.id === movieId
+        ? data?.isStarred
+          ? { ...data, isStarred: false }
+          : { ...data, isStarred: true }
+        : data
+    );
+    dispatch({
+      type: actionTypes.toggleStarred,
+      payload: updatedMovies,
+    });
+  };
+
+  const starredMoviesList = state.moviesList.filter((data) => data?.isStarred);
+  const watchlistMoviesList = state.moviesList.filter(
+    (data) => data?.inWatchlist
+  );
+
   let filteredMovies = filterByGenre(state.moviesList, state.filters.genre);
   filteredMovies = filterByYear(filteredMovies, state.filters.year);
   filteredMovies = filterByRating(filteredMovies, state.filters.rating);
@@ -43,9 +75,13 @@ export const MoviesProvider = ({ children }) => {
         filters: state.filters,
         genreData,
         filteredMovies,
+        starredMoviesList,
+        watchlistMoviesList,
         updateGenre,
         updateRating,
         updateYear,
+        toggleStarred,
+        toggleWatchlist,
       }}
     >
       {children}
