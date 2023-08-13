@@ -5,6 +5,7 @@ const StarredMovies = () => {
   const { starredMoviesList } = useMoviesContext();
   return (
     <div>
+      <h1 className="p-3 text-xl font-bold">Starred Movies</h1>
       <main className="grid sm:grid-cols-2 md:grid-cols-4 gap-5 p-5">
         {starredMoviesList?.length > 0 ? (
           starredMoviesList?.map((data) => (
