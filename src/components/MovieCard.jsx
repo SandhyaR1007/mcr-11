@@ -1,10 +1,15 @@
 import React from "react";
 import { useMoviesContext } from "../context/MoviesContext";
+import { Link, useNavigate } from "react-router-dom";
 
 const MovieCard = ({ movieData }) => {
   const { toggleStarred, toggleWatchlist } = useMoviesContext();
+
   return (
-    <div className=" shadow-md rounded-md flex flex-col gap-2">
+    <Link
+      className=" shadow-md rounded-md flex flex-col gap-2"
+      to={`/movieDetails/${movieData?.id}`}
+    >
       <section className="h-2/3">
         <img
           src={movieData?.imageURL}
@@ -32,7 +37,7 @@ const MovieCard = ({ movieData }) => {
           </button>
         </section>
       </section>
-    </div>
+    </Link>
   );
 };
 

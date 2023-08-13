@@ -59,6 +59,9 @@ export const MoviesProvider = ({ children }) => {
     (data) => data?.inWatchlist
   );
 
+  const getMovieDetailsById = (movieId) =>
+    state.moviesList.find(({ id }) => Number(id) === Number(movieId));
+
   let filteredMovies = filterByGenre(state.moviesList, state.filters.genre);
   filteredMovies = filterByYear(filteredMovies, state.filters.year);
   filteredMovies = filterByRating(filteredMovies, state.filters.rating);
@@ -82,6 +85,7 @@ export const MoviesProvider = ({ children }) => {
         updateYear,
         toggleStarred,
         toggleWatchlist,
+        getMovieDetailsById,
       }}
     >
       {children}
